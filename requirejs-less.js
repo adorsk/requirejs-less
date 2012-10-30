@@ -21,14 +21,19 @@ define(
                     });
                     parser.parse(src, function(err, tree){
                         if (err){
-                            onLoad.error(err);
+                            onLoad.error("Less error: ", JSON.stringify(err));
                             return;
                         }
 
-                        var css = tree.toCSS();
-                        // Return parsed CSS.
-                        onLoad(css);
-                        return;
+                        try {
+                            var css = tree.toCSS();
+                            onLoad(css);
+                            return;
+                        }
+                        catch (e){
+                            onLoad.error("Less error: " + JSON.stringify(e));
+                            return;
+                        }
                     });
                 };
 
